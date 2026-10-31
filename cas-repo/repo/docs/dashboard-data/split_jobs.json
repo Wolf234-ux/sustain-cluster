@@ -1,0 +1,1 @@
+[{"mode": "One block", "blocks": 1, "schedule": "Mon 09:00\u201317:00", "pct_saved": 25.0, "kg_saved": 12.81, "rs_saved": 42.4}, {"mode": "Two checkpointed blocks", "blocks": 2, "schedule": "Mon 11:00\u201315:00 + Tue 11:00\u201315:00", "pct_saved": 29.0, "kg_saved": 14.88, "rs_saved": 65.6}]

@@ -1,0 +1,151 @@
+{
+ "carbon": {
+  "signal": "gco2",
+  "unit": "gCO2/kWh",
+  "trained_on": "2021-01-08 to 2023-12-31, 626,112 rows",
+  "train_seconds": 17.8,
+  "test_year": 2024,
+  "accuracy": {
+   "ml": {
+    "mae": 5.999133418646083,
+    "mape_pct": 0.8946083636898333,
+    "n": 70096
+   },
+   "persistence": {
+    "mae": 5.0808147397854375,
+    "mape_pct": 0.7530234637739154,
+    "n": 70096
+   },
+   "profile": {
+    "mae": 12.463610982021818,
+    "mape_pct": 1.8799987999300776,
+    "n": 70096
+   },
+   "cas_v2_static": {
+    "mae": 95.71173861561286,
+    "mape_pct": 14.121768044188098,
+    "n": 70096
+   }
+  },
+  "by_horizon": {
+   "h1-6": {
+    "ml_mape": 0.8021101201033125,
+    "persistence_mape": 0.6343800249910116
+   },
+   "h7-24": {
+    "ml_mape": 0.8313405082371603,
+    "persistence_mape": 0.6342149011721087
+   },
+   "h25-48": {
+    "ml_mape": 0.9653849109454505,
+    "persistence_mape": 0.872116464647389
+   }
+  },
+  "scheduling": {
+   "cases": 1428,
+   "oracle_saving_pct": 2.4417349401586717,
+   "ml": {
+    "realised_saving_pct": 2.3377164011746876,
+    "captured_pct": 95.81419084429392
+   },
+   "persistence": {
+    "realised_saving_pct": 2.305686505147146,
+    "captured_pct": 94.4916299721728
+   },
+   "profile": {
+    "realised_saving_pct": 2.327963735486544,
+    "captured_pct": 95.40225543218374
+   },
+   "cas_v2_static": {
+    "realised_saving_pct": 1.9049795604550699,
+    "captured_pct": 78.02714663573873
+   }
+  },
+  "feature_importance": {
+   "h": 0.0215,
+   "hour": 0.747,
+   "dow": 0.1931,
+   "doy_s": 0.5605,
+   "doy_c": 1.4165,
+   "y0": 0.7145,
+   "y_same": 11.5297,
+   "y_week": 1.6726,
+   "m24": 0.7951,
+   "s24": 0.1295,
+   "temp": 0.0363,
+   "rh": 0.0125,
+   "cloud": 0.0035,
+   "wind": -0.017
+  }
+ },
+ "price": {
+  "signal": "rs_kwh",
+  "unit": "Rs/kWh",
+  "trained_on": "2020-01-08 to 2023-12-31, 835,392 rows",
+  "train_seconds": 21.0,
+  "test_year": 2024,
+  "accuracy": {
+   "ml": {
+    "mae": 1.0649582046562165,
+    "mape_pct": 29.67809036229607,
+    "n": 70048
+   },
+   "persistence": {
+    "mae": 1.102957769672225,
+    "mape_pct": 30.215561240717225,
+    "n": 70048
+   },
+   "profile": {
+    "mae": 1.5749780710858328,
+    "mape_pct": 43.837829332790015,
+    "n": 70048
+   }
+  },
+  "by_horizon": {
+   "h1-6": {
+    "ml_mape": 26.35901151017731,
+    "persistence_mape": 27.089294411085362
+   },
+   "h7-24": {
+    "ml_mape": 27.92915702811694,
+    "persistence_mape": 27.098054576739194
+   },
+   "h25-48": {
+    "ml_mape": 31.82584188068831,
+    "persistence_mape": 33.34382295426313
+   }
+  },
+  "scheduling": {
+   "cases": 1428,
+   "oracle_saving_pct": 35.73719222526046,
+   "ml": {
+    "realised_saving_pct": 32.485245383002294,
+    "captured_pct": 94.50708163834986
+   },
+   "persistence": {
+    "realised_saving_pct": 29.46399137825254,
+    "captured_pct": 90.94486500717443
+   },
+   "profile": {
+    "realised_saving_pct": 31.365610286928973,
+    "captured_pct": 93.69192039845278
+   }
+  },
+  "feature_importance": {
+   "h": 0.014,
+   "hour": 0.2235,
+   "dow": 0.1026,
+   "doy_s": 0.0308,
+   "doy_c": 0.1288,
+   "y0": 0.0305,
+   "y_same": 0.5445,
+   "y_week": 0.1879,
+   "m24": 0.026,
+   "s24": -0.0006,
+   "temp": 0.0369,
+   "rh": 0.0083,
+   "cloud": 0.0108,
+   "wind": 0.0073
+  }
+ }
+}

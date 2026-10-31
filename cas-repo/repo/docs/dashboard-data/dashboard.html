@@ -1,0 +1,371 @@
+<meta name="dash-one-writer">
+<style>
+  .cs { font-family: var(--font-anthropic-sans); color: var(--color-fg); display: grid; gap: var(--cds-gap-lg); }
+  .cs h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; }
+  .cs h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0 0 var(--cds-gap-xs); }
+  .cs .lede { font-size: var(--cds-font-size-body); color: var(--color-fg-muted); margin: var(--cds-gap-xs) 0 0; max-width: 60rem; }
+  .cs .lede b, .cs .tile b { font-weight: var(--cds-font-weight-medium); color: var(--color-fg); }
+  .cs .note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 0 0 var(--cds-gap-sm); }
+  .cs .card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
+  .cs .grid { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
+  .cs .tiles { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); }
+  .cs .tile .k { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .cs .tile .v { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; margin-top: var(--cds-gap-xs); }
+  .cs .tile .v.good { color: var(--color-ok); }
+  .cs .tile .s { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-top: var(--cds-gap-xs); }
+  .cs .controls { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); align-items: end; }
+  .cs .controls label { display: grid; gap: var(--cds-gap-xs); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .cs select { font: inherit; font-size: var(--cds-font-size-body); color: var(--color-fg); background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-xs) var(--cds-pad-sm); }
+  .cs .chart { position: relative; min-height: 220px; }
+  .cs .chart.short { min-height: 140px; }
+  .cs .legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-top: var(--cds-gap-sm); }
+  .cs .sw { display: inline-block; width: 0.75rem; height: 0.75rem; border-radius: 2px; margin-right: var(--cds-gap-xs); vertical-align: -1px; }
+  .cs .sw.base { background: var(--color-warn); opacity: .35; }
+  .cs .sw.best { background: var(--color-ok); opacity: .35; }
+  .cs .tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); white-space: nowrap; }
+  .cs .tip .t { color: var(--cds-text-secondary); }
+  .cs table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-body); font-variant-numeric: tabular-nums; }
+  .cs th, .cs td { text-align: left; padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); }
+  .cs th { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); }
+  .cs td.n, .cs th.n { text-align: right; }
+  .cs .tablewrap { overflow-x: auto; }
+  .cs .ok { color: var(--color-ok); }
+  .cs ul.src { margin: 0; padding-left: 1.1rem; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); display: grid; gap: var(--cds-gap-xs); }
+  .cs [data-dash-source-state=empty] { color: transparent; }
+  .cs [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+</style>
+
+<div class="cs">
+  <header id="top">
+    <h1>Carbon-aware scheduler: India demo</h1>
+    <p class="lede">An <b data-draw="t-kw">—</b> kW AI job submitted at <b data-draw="t-submit">—</b> and moved to <b data-draw="t-moved">—</b> emits <b data-draw="t-pct">—</b> less CO₂ and costs <b data-draw="t-rspct">—</b> less to run on a Gujarat HT connection. In India, the cleanest hours are also the cheapest.</p>
+  </header>
+
+  <section class="card" id="planner">
+    <h2>Try it: when is the job submitted?</h2>
+    <p class="note">The scheduler searches every start time within a 24-hour deadline and picks the cleanest. Savings are measured against running immediately.</p>
+    <div class="controls">
+      <label>Submitted at (IST)
+        <select class="cs-submit" aria-label="Submitted at">
+          <option value="0">00:00</option><option value="1">01:00</option><option value="2">02:00</option><option value="3">03:00</option>
+          <option value="4">04:00</option><option value="5">05:00</option><option value="6">06:00</option><option value="7">07:00</option>
+          <option value="8">08:00</option><option value="9">09:00</option><option value="10">10:00</option><option value="11">11:00</option>
+          <option value="12">12:00</option><option value="13">13:00</option><option value="14">14:00</option><option value="15">15:00</option>
+          <option value="16">16:00</option><option value="17">17:00</option><option value="18">18:00</option><option value="19">19:00</option>
+          <option value="20">20:00</option><option value="21">21:00</option><option value="22">22:00</option><option value="23">23:00</option>
+        </select>
+      </label>
+      <label>Job length
+        <select class="cs-len" aria-label="Job length">
+          <option value="2">2 hours</option><option value="4">4 hours</option><option value="8">8 hours</option>
+        </select>
+      </label>
+    </div>
+  </section>
+
+  <section class="tiles" id="results">
+    <div class="card tile"><div class="k">CO₂ cut</div><div class="v good" data-draw="p-pct">—</div><div class="s" data-draw="p-kg">—</div></div>
+    <div class="card tile"><div class="k">Energy charge saved, per run</div><div class="v good" data-draw="p-rs">—</div><div class="s" data-draw="p-rsfrom">—</div></div>
+    <div class="card tile"><div class="k">Scheduled for</div><div class="v" data-draw="p-moved">—</div><div class="s" data-draw="p-wait">—</div></div>
+    <div class="card tile"><div class="k">Grid intensity, now vs chosen</div><div class="v" data-draw="p-g">—</div><div class="s">gCO₂ per kWh</div></div>
+  </section>
+
+  <section class="card" id="curve">
+    <h2>India's grid: carbon and price by hour</h2>
+    <p class="note">Coal fills the evening peak; solar pulls carbon down at midday. Gujarat's tariff discounts exactly those midday hours and surcharges the peaks.</p>
+    <div class="chart" data-draw="india-carbon" data-source="india_hourly planner"></div>
+    <div class="chart short" data-draw="india-tariff" data-source="india_hourly planner"></div>
+    <div class="legend"><span><span class="sw base"></span>Run now</span><span><span class="sw best"></span>Chosen window</span></div>
+  </section>
+
+  <section class="grid">
+    <div class="card" id="scale">
+      <h2>At data-center scale</h2>
+      <p class="note">One megawatt of flexible load moved out of the evening peak, four hours a day, every day of the year.</p>
+      <div class="tiles">
+        <div class="tile"><div class="k">CO₂ avoided per year</div><div class="v good" data-draw="mw-t">—</div><div class="s">tonnes</div></div>
+        <div class="tile"><div class="k">Energy charges saved per year</div><div class="v good" data-draw="mw-rs">—</div><div class="s">₹ lakh</div></div>
+      </div>
+    </div>
+    <div class="card" id="split">
+      <h2>Checkpointable jobs save more</h2>
+      <p class="note">An 8-hour job submitted in the evening with a 48-hour deadline. Splitting lets both halves land in solar hours.</p>
+      <div class="tablewrap">
+        <table data-source="split_jobs" data-row-key="blocks">
+          <thead><tr><th data-field="mode">Mode</th><th data-field="schedule">Schedule</th><th class="n" data-field="pct_saved">CO₂ cut %</th><th class="n" data-field="rs_saved">₹ saved</th></tr></thead>
+          <tbody data-draw="split-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="scenarios">
+    <h2>Four typical submit times, 4-hour job</h2>
+    <p class="note">The scheduler only waits when waiting helps: at midday it runs immediately.</p>
+    <div class="tablewrap">
+      <table data-source="planner" data-row-key="job_hours,submit_hour">
+        <thead><tr><th data-field="submit_hour">Submitted</th><th data-field="moved_to">Runs at</th><th class="n" data-field="base_gco2">Now g/kWh</th><th class="n" data-field="best_gco2">Chosen g/kWh</th><th class="n" data-field="pct_saved">CO₂ cut %</th><th class="n" data-field="rs_saved">₹ saved</th></tr></thead>
+        <tbody data-draw="scen-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" id="gb">
+    <h2>Live test on real grid data (Great Britain, 31 Oct)</h2>
+    <p class="note">The real 48-hour forecast captured from National Grid ESO. A 3-hour job: the longer the deadline, the cleaner the window it can reach.</p>
+    <div class="chart" data-draw="gb-chart" data-source="gb_live gb_decisions"></div>
+    <div class="tablewrap">
+      <table data-source="gb_decisions" data-row-key="deadline_h">
+        <thead><tr><th data-field="deadline_h">Deadline (h)</th><th class="n" data-field="base_gco2">Now g/kWh</th><th class="n" data-field="best_gco2">Chosen g/kWh</th><th class="n" data-field="pct_saved">CO₂ cut %</th></tr></thead>
+        <tbody data-draw="gb-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" id="method">
+    <h2>Method and sources</h2>
+    <ul class="src">
+      <li>India hourly curve: a typical-day model. Its daily average equals the Central Electricity Authority's grid emission factor for FY 2023-24; its shape follows Ember's 2026 data on midday vs evening fossil generation.</li>
+      <li>Tariff: Gujarat HTP-I energy charges for the mid-size billing-demand slab, from the GERC tariff schedule effective April 2026, including its time-of-use peak charge and midday discount. Duty, taxes, demand charges and fuel surcharge are excluded.</li>
+      <li>Great Britain: National Grid ESO Carbon Intensity API forecast, captured live during testing.</li>
+      <li>All results are computed by the open Carbon-Aware Scheduler v2 engine, which logs every forecast, every option scored and every decision.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+  window.csFmt = {
+    hr: (h) => String(Math.floor(h)).padStart(2, '0') + ':' + (h % 1 ? '30' : '00'),
+    rs: (v) => '₹' + d3.format(',.2f')(v),
+  };
+  window.csSel = () => {
+    const p = dash.params();
+    const g = dash.data('planner');
+    if (g.status !== 'ok') return null;
+    return g.data.find((r) => +r.job_hours === +(p.job_hours ?? 4) && +r.submit_hour === +(p.submit_hour ?? 18)) || null;
+  };
+  window.csMark = (el, field, text, row) => {
+    const s = document.createElement('span');
+    s.dataset.source = 'planner';
+    s.dataset.field = field;
+    s.dataset.where = 'job_hours=' + row.job_hours + '&submit_hour=' + row.submit_hour;
+    s.textContent = text;
+    el.replaceChildren(s);
+  };
+
+  document.querySelectorAll('.cs-submit').forEach((sel) => sel.addEventListener('change', () => dash.setParams({submit_hour: +sel.value})));
+  document.querySelectorAll('.cs-len').forEach((sel) => sel.addEventListener('change', () => dash.setParams({job_hours: +sel.value})));
+  dash.onData(() => {
+    const p = dash.params();
+    document.querySelectorAll('.cs-submit').forEach((s) => { s.value = String(p.submit_hour ?? 18); });
+    document.querySelectorAll('.cs-len').forEach((s) => { s.value = String(p.job_hours ?? 4); });
+  });
+
+  dash.calc('per_mw', {
+    inputs: ['planner'],
+    title: 'Per MW of flexible load, per year',
+    description: 'Savings per kWh for a 4-hour job submitted at 18:00, scaled to 1 MW for 4 hours a day for 365 days.',
+    fn: (planner) => {
+      const r = planner.find((x) => +x.job_hours === 4 && +x.submit_hour === 18);
+      const kwhYear = 1000 * 4 * 365;
+      return [{ t_co2_year: Math.round(r.kg_saved / r.kwh * kwhYear / 1000), rs_lakh_year: Math.round(r.rs_saved / r.kwh * kwhYear / 1e5 * 10) / 10 }];
+    },
+  });
+</script>
+
+<script>
+  const simple = (name, field, fmt) => dash.draw(name, (el) => {
+    const r = window.csSel();
+    if (!r) { el.textContent = '—'; return; }
+    window.csMark(el, field, fmt(r[field], r), r);
+  });
+  simple('t-kw', 'kw', (v) => String(v));
+  simple('t-submit', 'submit_hour', (v) => window.csFmt.hr(+v));
+  simple('t-moved', 'moved_to', (v) => v);
+  simple('t-pct', 'pct_saved', (v) => d3.format('.1f')(v) + '%');
+  simple('t-rspct', 'rs_pct_saved', (v) => d3.format('.1f')(v) + '%');
+  simple('p-pct', 'pct_saved', (v) => d3.format('.1f')(v) + '%');
+  simple('p-kg', 'kg_saved', (v) => d3.format('.2f')(v) + ' kg CO₂ less per run');
+  simple('p-rs', 'rs_saved', (v) => window.csFmt.rs(v));
+  simple('p-rsfrom', 'rs_base', (v, r) => 'from ' + window.csFmt.rs(v) + ' if run now');
+  simple('p-moved', 'moved_to', (v) => v);
+  simple('p-wait', 'wait_h', (v) => +v === 0 ? 'runs immediately' : 'waits ' + d3.format('.1f')(v) + ' h');
+  dash.draw('p-g', (el) => {
+    const r = window.csSel();
+    if (!r) { el.textContent = '—'; return; }
+    const a = document.createElement('span'); a.dataset.source = 'planner'; a.dataset.field = 'base_gco2';
+    a.dataset.where = 'job_hours=' + r.job_hours + '&submit_hour=' + r.submit_hour; a.textContent = d3.format(',')(r.base_gco2);
+    const b = a.cloneNode(); b.dataset.field = 'best_gco2'; b.textContent = d3.format(',')(r.best_gco2);
+    el.replaceChildren(a, document.createTextNode(' → '), b);
+  });
+
+  const mw = (name, field, fmt) => dash.draw(name, (el) => {
+    const g = dash.data('per_mw');
+    if (g.status !== 'ok' || !g.data.length) { el.textContent = '—'; return; }
+    const s = document.createElement('span'); s.dataset.source = 'per_mw'; s.dataset.field = field; s.dataset.row = '0';
+    s.textContent = fmt(g.data[0][field]); el.replaceChildren(s);
+  });
+  mw('mw-t', 't_co2_year', (v) => d3.format(',')(v));
+  mw('mw-rs', 'rs_lakh_year', (v) => d3.format('.1f')(v));
+
+  dash.draw('split-body', (tb) => {
+    const g = dash.data('split_jobs');
+    tb.replaceChildren();
+    if (g.status !== 'ok') return;
+    g.data.forEach((r) => {
+      const tr = tb.insertRow(); tr.dataset.key = String(r.blocks);
+      tr.insertCell().textContent = r.mode;
+      tr.insertCell().textContent = r.schedule;
+      const c = tr.insertCell(); c.className = 'n ok'; c.textContent = d3.format('.1f')(r.pct_saved);
+      const d = tr.insertCell(); d.className = 'n'; d.textContent = d3.format(',.2f')(r.rs_saved);
+    });
+  });
+
+  dash.draw('scen-body', (tb) => {
+    const g = dash.data('planner');
+    tb.replaceChildren();
+    if (g.status !== 'ok') return;
+    g.data.filter((r) => +r.job_hours === 4 && [7, 12, 18, 22].includes(+r.submit_hour))
+      .sort((a, b) => a.submit_hour - b.submit_hour)
+      .forEach((r) => {
+        const tr = tb.insertRow(); tr.dataset.key = r.job_hours + ',' + r.submit_hour;
+        tr.insertCell().textContent = window.csFmt.hr(+r.submit_hour);
+        tr.insertCell().textContent = r.moved_to;
+        const a = tr.insertCell(); a.className = 'n'; a.textContent = d3.format(',')(r.base_gco2);
+        const b = tr.insertCell(); b.className = 'n'; b.textContent = d3.format(',')(r.best_gco2);
+        const c = tr.insertCell(); c.className = 'n ok'; c.textContent = d3.format('.1f')(r.pct_saved);
+        const d = tr.insertCell(); d.className = 'n'; d.textContent = d3.format(',.2f')(r.rs_saved);
+      });
+  });
+
+  dash.draw('gb-body', (tb) => {
+    const g = dash.data('gb_decisions');
+    tb.replaceChildren();
+    if (g.status !== 'ok') return;
+    g.data.forEach((r) => {
+      const tr = tb.insertRow(); tr.dataset.key = String(r.deadline_h);
+      tr.insertCell().textContent = String(r.deadline_h);
+      const a = tr.insertCell(); a.className = 'n'; a.textContent = d3.format(',')(r.base_gco2);
+      const b = tr.insertCell(); b.className = 'n'; b.textContent = d3.format(',')(r.best_gco2);
+      const c = tr.insertCell(); c.className = 'n ok'; c.textContent = d3.format('.1f')(r.pct_saved);
+    });
+  });
+</script>
+
+<script>
+  window.csBands = (r) => {
+    // run-now window and chosen window as [start, end] hour spans on a 0-24 axis, split where they wrap midnight
+    const span = (a, len) => {
+      const out = [];
+      let s = a % 24, left = len;
+      while (left > 0) { const e = Math.min(24, s + left); out.push([s, e]); left -= e - s; s = 0; }
+      return out;
+    };
+    const len = +r.job_hours;
+    return { base: span(+r.submit_hour, len), best: span(+r.start_hour, len) };
+  };
+
+  window.csHourChart = (el, opts) => {
+    const g = dash.data('india_hourly');
+    el.replaceChildren();
+    if (g.status !== 'ok') return;
+    const rows = g.data.map((d) => ({ hour: +d.hour, v: +d[opts.field] }));
+    const sel = window.csSel();
+    const W = Math.max(280, el.clientWidth), H = opts.height;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const yMax = d3.max(rows, (d) => d.v) * 1.08;
+    const y = d3.scaleLinear([opts.yMin, yMax], [H - 24, 12]).nice();
+    const probe = svg.append('text').attr('font-size', 11).text(opts.tick(y.domain()[1]));
+    const ml = probe.node().getComputedTextLength() + 10; probe.remove();
+    const x = d3.scaleLinear([0, 24], [ml, W - 8]);
+    if (sel) {
+      const b = window.csBands(sel);
+      const band = (spans, color) => spans.forEach(([a, e]) => svg.append('rect').attr('x', x(a)).attr('y', 12)
+        .attr('width', Math.max(1, x(e) - x(a))).attr('height', H - 36).attr('fill', color).attr('opacity', .16));
+      band(b.base, 'var(--color-warn)');
+      band(b.best, 'var(--color-ok)');
+    }
+    svg.append('g').selectAll('line').data(y.ticks(4)).join('line').attr('x1', ml).attr('x2', W - 8)
+      .attr('y1', (d) => y(d)).attr('y2', (d) => y(d)).attr('stroke', 'var(--cds-chart-grid)');
+    svg.append('g').selectAll('text').data(y.ticks(4)).join('text').attr('x', ml - 6).attr('y', (d) => y(d) + 4)
+      .attr('text-anchor', 'end').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(opts.tick);
+    const xt = W < 480 ? [0, 6, 12, 18, 24] : [0, 3, 6, 9, 12, 15, 18, 21, 24];
+    svg.append('g').selectAll('text').data(xt).join('text').attr('x', (d) => x(d)).attr('y', H - 6)
+      .attr('text-anchor', (d) => d === 0 ? 'start' : d === 24 ? 'end' : 'middle').attr('font-size', 11)
+      .attr('fill', 'var(--color-fg-muted)').text((d) => String(d % 24).padStart(2, '0') + ':00');
+    svg.append('line').attr('x1', ml).attr('x2', W - 8).attr('y1', H - 24).attr('y2', H - 24).attr('stroke', 'var(--cds-chart-axis)');
+    if (opts.kind === 'line') {
+      const pts = rows.concat([{ hour: 24, v: rows[0].v }]);
+      svg.append('path').datum(pts).attr('fill', 'none').attr('stroke', dash.colors[0]).attr('stroke-width', 2)
+        .attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round').attr('d', d3.line().x((d) => x(d.hour)).y((d) => y(d.v)));
+    } else {
+      const bw = Math.min(32, (x(1) - x(0)) * 0.72);
+      svg.append('g').selectAll('rect').data(rows).join('rect').attr('x', (d) => x(d.hour + 0.5) - bw / 2).attr('width', bw)
+        .attr('y', (d) => y(d.v)).attr('height', (d) => y(y.domain()[0]) - y(d.v)).attr('rx', 2).attr('fill', dash.colors[1]);
+    }
+    const tip = d3.select(el).append('div').attr('class', 'tip').style('display', 'none');
+    const dot = svg.append('circle').attr('r', 4).attr('fill', dash.colors[opts.kind === 'line' ? 0 : 1]).style('display', 'none');
+    svg.append('rect').attr('x', ml).attr('y', 0).attr('width', W - 8 - ml).attr('height', H).attr('fill', 'transparent')
+      .on('mousemove', (ev) => {
+        const [mx] = d3.pointer(ev);
+        const h = Math.max(0, Math.min(23, Math.floor(x.invert(mx))));
+        const all = dash.data('india_hourly').data.find((d) => +d.hour === h);
+        dot.style('display', null).attr('cx', x(opts.kind === 'line' ? h : h + 0.5)).attr('cy', y(+all[opts.field]));
+        tip.style('display', null).html('');
+        tip.append('div').attr('class', 't').text(String(h).padStart(2, '0') + ':00 IST');
+        tip.append('div').text(d3.format(',')(Math.round(all.gco2)) + ' gCO₂/kWh · ' + window.csFmt.rs(+all.tariff_rs) + '/kWh');
+        const tw = tip.node().offsetWidth;
+        tip.style('left', Math.min(W - tw - 4, Math.max(4, mx + 12)) + 'px').style('top', '4px');
+      })
+      .on('mouseleave', () => { tip.style('display', 'none'); dot.style('display', 'none'); });
+  };
+
+  dash.draw('india-carbon', (el) => window.csHourChart(el, { field: 'gco2', height: 220, yMin: 400, kind: 'line', tick: (d) => d3.format(',')(d) + ' g' }));
+  dash.draw('india-tariff', (el) => window.csHourChart(el, { field: 'tariff_rs', height: 140, yMin: 0, kind: 'bar', tick: (d) => '₹' + d3.format('.1f')(d) }));
+
+  dash.draw('gb-chart', (el) => {
+    const g = dash.data('gb_live'), dec = dash.data('gb_decisions');
+    el.replaceChildren();
+    if (g.status !== 'ok') return;
+    const rows = g.data.map((d) => ({ t: new Date(d.start), v: +d.gco2 }));
+    const W = Math.max(280, el.clientWidth), H = 220;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`);
+    const y = d3.scaleLinear([0, d3.max(rows, (d) => d.v) * 1.1], [H - 24, 12]).nice();
+    const ml = 40;
+    const x = d3.scaleUtc(d3.extent(rows, (d) => d.t), [ml, W - 8]);
+    svg.append('g').selectAll('line').data(y.ticks(4)).join('line').attr('x1', ml).attr('x2', W - 8)
+      .attr('y1', (d) => y(d)).attr('y2', (d) => y(d)).attr('stroke', 'var(--cds-chart-grid)');
+    svg.append('g').selectAll('text').data(y.ticks(4)).join('text').attr('x', ml - 6).attr('y', (d) => y(d) + 4)
+      .attr('text-anchor', 'end').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text((d) => d3.format(',')(d));
+    const fmtT = (d) => d.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false });
+    const ticks = x.ticks(W < 480 ? 3 : 6);
+    svg.append('g').selectAll('text').data(ticks).join('text').attr('x', (d) => x(d)).attr('y', H - 6)
+      .attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)')
+      .text((d) => d.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', weekday: 'short', hour: '2-digit', hour12: false }) + 'h');
+    svg.append('line').attr('x1', ml).attr('x2', W - 8).attr('y1', H - 24).attr('y2', H - 24).attr('stroke', 'var(--cds-chart-axis)');
+    svg.append('path').datum(rows).attr('fill', 'none').attr('stroke', dash.colors[0]).attr('stroke-width', 2)
+      .attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round').attr('d', d3.line().x((d) => x(d.t)).y((d) => y(d.v)));
+    if (dec.status === 'ok') {
+      dec.data.forEach((r) => {
+        const t = new Date(r.start);
+        svg.append('circle').attr('cx', x(t)).attr('cy', y(+r.best_gco2)).attr('r', 5)
+          .attr('fill', +r.pct_saved > 0 ? 'var(--color-ok)' : 'var(--color-warn)');
+      });
+    }
+    const tip = d3.select(el).append('div').attr('class', 'tip').style('display', 'none');
+    const dot = svg.append('circle').attr('r', 4).attr('fill', dash.colors[0]).style('display', 'none');
+    const bis = d3.bisector((d) => d.t).center;
+    svg.append('rect').attr('x', ml).attr('y', 0).attr('width', W - 8 - ml).attr('height', H).attr('fill', 'transparent')
+      .on('mousemove', (ev) => {
+        const [mx] = d3.pointer(ev);
+        const d = rows[bis(rows, x.invert(mx))];
+        dot.style('display', null).attr('cx', x(d.t)).attr('cy', y(d.v));
+        tip.style('display', null).html('');
+        tip.append('div').attr('class', 't').text(fmtT(d.t) + ' IST');
+        tip.append('div').text(d3.format(',')(d.v) + ' gCO₂/kWh');
+        const tw = tip.node().offsetWidth;
+        tip.style('left', Math.min(W - tw - 4, Math.max(4, mx + 12)) + 'px').style('top', '4px');
+      })
+      .on('mouseleave', () => { tip.style('display', 'none'); dot.style('display', 'none'); });
+  });
+</script>
